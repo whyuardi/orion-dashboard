@@ -3,3 +3,6 @@ node_modules/
 screenshot.png
 .DS_Store
 *.log
+split.py
+screenshot.js
+__pycache__/

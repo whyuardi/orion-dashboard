@@ -43,6 +43,22 @@
 
 ---
 
+## Project Structure
+
+```
+orion-dashboard/
+├── index.html         # Main entry — imports CSS + JS
+├── css/
+│   └── style.css      # All styles (dark theme, responsive, animations)
+├── js/
+│   ├── config.js      # Chain configs, token addresses, ERC-20 ABIs
+│   ├── app.js         # Core logic: wallet, data fetching, chart, UI
+│   └── scene.js       # Three.js 3D scene (torus knot + particles)
+├── README.md
+├── LICENSE            # MIT
+└── .gitignore
+```
+
 ## Getting Started
 
 ### 1. Open the Dashboard
