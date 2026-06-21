@@ -1,11 +1,11 @@
 // ORION Dashboard — 3D Scene
 // Three.js interactive torus knot with gold/amber metallic material
 
-//  THREE.JS — 3D SCENE
-// ===================================================================
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  (async () => {
-    const THREE = await import('three');
+  function initScene() {
+    const THREE = window.THREE;
+    if (!THREE || !THREE.TorusKnotGeometry) { return; }
+
     const canvas = document.getElementById('three-canvas');
     if (!canvas) return;
 
@@ -48,7 +48,7 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const wire = new THREE.Mesh(wireGeo, wireMat);
     scene.add(wire);
 
-    // Core
+    // Core glow
     const coreGeo = new THREE.SphereGeometry(0.35, 16, 16);
     const coreMat = new THREE.MeshBasicMaterial({ color: 0xf59e0b, transparent: true, opacity: 0.04 });
     const core = new THREE.Mesh(coreGeo, coreMat);
@@ -67,13 +67,17 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     }
     const pGeo = new THREE.BufferGeometry();
     pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-    const pMat = new THREE.PointsMaterial({ color: 0xf59e0b, size: 0.018, transparent: true, opacity: 0.15, blending: THREE.AdditiveBlending, sizeAttenuation: true });
+    const pMat = new THREE.PointsMaterial({
+      color: 0xf59e0b, size: 0.018, transparent: true,
+      opacity: 0.15, blending: THREE.AdditiveBlending, sizeAttenuation: true,
+    });
     const particles = new THREE.Points(pGeo, pMat);
     scene.add(particles);
 
     // Drag rotation
     let isDragging = false, prevMouse = {x:0,y:0}, dragVel = {x:0,y:0};
     let targetRot = {x:0,y:0};
+
     document.addEventListener('mousedown', (e) => {
       if (e.target.closest('.btn, a, button, .wallet-option, .chain-option, .chain-btn')) return;
       isDragging = true; prevMouse = {x: e.clientX, y: e.clientY}; dragVel = {x:0,y:0};
@@ -110,7 +114,8 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 
     function animate() {
       requestAnimationFrame(animate);
-      const sr = Math.min(scrollY / (window.innerHeight * 1.5), 1.5);
+      const sr = Math.min(window.scrollY / (window.innerHeight * 1.5), 1.5);
+
       if (isDragging) {
         mesh.rotation.x += (targetRot.x - mesh.rotation.x) * 0.15;
         mesh.rotation.y += (targetRot.y - mesh.rotation.y) * 0.15;
@@ -136,4 +141,6 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       renderer.render(scene, camera);
     }
     animate();
-  })();
+  }
+  initScene();
+}
